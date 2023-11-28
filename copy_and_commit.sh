@@ -24,8 +24,8 @@ PARSED_STAGING_DIR="/parsed_staging"
 # Navigate to the repository directory
 cd /repo
 
-# Copy files which are marked as ready to staging
-# Also parses each file to markdown and sends to parsed staging
+# Copy files to staging if they are marked as ready
+# Also parses each file to markdown and sends result to parsed_staging
 for file in ${OBSIDIAN_SOURCE_DIR}/${OBSIDIAN_BLOG_POSTS_DIR}/*; do
     # Check if the file ends with '#ready'
     if tail -n1 "$file" | grep -q '#ready$'; then
@@ -33,7 +33,7 @@ for file in ${OBSIDIAN_SOURCE_DIR}/${OBSIDIAN_BLOG_POSTS_DIR}/*; do
 		# Copy to the staging directory
 		cp -r "$file" ${STAGING_DIR}/
 
-		# Parse to parsed staging directory
+		# Parse and output to parsed_staging
 		obsidian-export ${OBSIDIAN_SOURCE_DIR} ${PARSED_STAGING_DIR} --start-at "$file"
 	fi
 done
@@ -49,6 +49,7 @@ find ${PARSED_STAGING_DIR} -type f -exec sh -c 'echo "---\ntag: diary\n---\n\n$(
 # I was too lazy to make this automatic and nice
 find ${PARSED_STAGING_DIR} -type f -exec sed -i 's|\.\./attachments|/images/obsidian|g' {} +
 
+# Final preprocessing and then copy the resulting markdown file into the blog repo
 for file in ${PARSED_STAGING_DIR}/*; do
 	# Remove the last line (presumably '#ready') from the end of the file
 	sed -i '$ d' "$file"

@@ -4,7 +4,7 @@ This project automatically updates your github pages blog with files from your O
 
 ## Configuration
 
-Configuration is in a bad state right now. There are directories and arguemnts that need to be configured in container_manager.sh, copy_and_commit.sh, and Dockerfile. You also need to add your github token in a github_token.txt file.
+Configuration is in a bad state right now. There are directories and arguments that need to be configured in container_manager.sh, copy_and_commit.sh, and Dockerfile. You also need to add your github token in a github_token.txt file.
 
 ## Running the docker
 

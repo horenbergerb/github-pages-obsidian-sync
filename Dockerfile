@@ -36,7 +36,7 @@ RUN mkdir -p /repo/${REPO_IMAGE_DIR}
 RUN mkdir -p /repo/${REPO_DEST_DIR}
 
 # Set up the cron job
-RUN echo "*/30 * * * * /bin/bash -c '/usr/local/bin/copy_and_commit.sh >> /proc/1/fd/1'" > /etc/cron.d/obsidian_sync_cron
+RUN echo "0 */2 * * * /bin/bash -c '/usr/local/bin/copy_and_commit.sh >> /proc/1/fd/1'" > /etc/cron.d/obsidian_sync_cron
 RUN chmod 0644 /etc/cron.d/obsidian_sync_cron
 RUN crontab /etc/cron.d/obsidian_sync_cron
 
