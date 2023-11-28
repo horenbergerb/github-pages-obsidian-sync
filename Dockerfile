@@ -21,7 +21,7 @@ RUN chmod +x /usr/local/bin/obsidian-export
 # Login credentials for pushing changes
 ENV GITHUB_EMAIL="horenbergerbeau@gmail.com"
 ENV GITHUB_USERNAME="horenbergerb"
-RUN export GITHUB_TOKEN="$(cat github_token.txt)"
+ARG GITHUB_TOKEN
 # The repo you will be updating
 ENV GITHUB_REPO_OWNER="horenbergerb"
 ENV GITHUB_REPO_NAME="horenbergerb.github.io"

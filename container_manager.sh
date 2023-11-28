@@ -7,7 +7,8 @@ start_container() {
     echo "Starting container..."
 	
 	# Build the Docker image
-	docker build -t $IMAGE_NAME .
+	docker build -t $IMAGE_NAME . \
+        --build-arg GITHUB_TOKEN="$(cat github_token.txt)"
 
 	# Run the Docker container
 	docker run --init -d \
