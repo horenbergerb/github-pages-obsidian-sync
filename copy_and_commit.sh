@@ -10,13 +10,16 @@ OBSIDIAN_IMAGES_DIR="attachments"
 STAGING_DIR="/staging"
 PARSED_STAGING_DIR="/parsed_staging"
 
+# This check is temporarily disabled due to bugs
+# Somehow staging was getting populated before this check, which is a bug
+# TODO: Figure out why and fix this
 # Don't run if there are no new changes
-diff -r $OBSIDIAN_SOURCE_DIR/$OBSIDIAN_BLOG_POSTS_DIR $STAGING_DIR
-diff_exit_code=$?
-if [[ $diff_exit_code -eq 0 ]]; then
-	echo "No changes to upload. copy_and_commit.sh exiting..."
-	exit 1
-fi
+#diff -r $OBSIDIAN_SOURCE_DIR/$OBSIDIAN_BLOG_POSTS_DIR $STAGING_DIR
+#diff_exit_code=$?
+#if [[ $diff_exit_code -eq 0 ]]; then
+#	echo "No changes to upload. copy_and_commit.sh exiting..."
+#	exit 1
+#fi
 
 # Navigate to the repository directory
 cd /repo
