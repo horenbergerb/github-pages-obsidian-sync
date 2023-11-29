@@ -24,6 +24,8 @@ PARSED_STAGING_DIR="/parsed_staging"
 # Navigate to the repository directory
 cd /repo
 
+git pull
+
 # Copy files to staging if they are marked as ready
 # Also parses each file to markdown and sends result to parsed_staging
 for file in ${OBSIDIAN_SOURCE_DIR}/${OBSIDIAN_BLOG_POSTS_DIR}/*; do
@@ -34,7 +36,7 @@ for file in ${OBSIDIAN_SOURCE_DIR}/${OBSIDIAN_BLOG_POSTS_DIR}/*; do
 		cp -r "$file" ${STAGING_DIR}/
 
 		# Parse and output to parsed_staging
-		obsidian-export ${OBSIDIAN_SOURCE_DIR} ${PARSED_STAGING_DIR} --start-at "$file"
+		/usr/local/bin/obsidian-export ${OBSIDIAN_SOURCE_DIR} ${PARSED_STAGING_DIR} --start-at "$file"
 	fi
 done
 
