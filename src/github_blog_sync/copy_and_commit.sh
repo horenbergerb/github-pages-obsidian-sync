@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 # Config to handle empty directories with the for loops
 shopt -s nullglob
@@ -29,8 +29,8 @@ git pull
 # Copy files to staging if they are marked as ready
 # Also parses each file to markdown and sends result to parsed_staging
 for file in ${OBSIDIAN_SOURCE_DIR}/${OBSIDIAN_BLOG_POSTS_DIR}/*; do
-    # Check if the file ends with '#ready'
-    if tail -n1 "$file" | grep -q '#ready$'; then
+	# Check if the file ends with '#ready'
+	if tail -n1 "$file" | grep -q '#ready$'; then
 
 		# Copy to the staging directory
 		cp -r "$file" ${STAGING_DIR}/
@@ -53,6 +53,9 @@ find ${PARSED_STAGING_DIR} -type f -exec sed -i 's|\.\./attachments|/images/obsi
 
 # Final preprocessing and then copy the resulting markdown file into the blog repo
 for file in ${PARSED_STAGING_DIR}/*; do
+	# Add table of contents after the first header
+	awk '/^#/ && !done {print; print "\n* TOC\n{:toc}\n"; done=1; next} 1' "$file" > temp && mv temp "$file"
+
 	# Remove the last line (presumably '#ready') from the end of the file
 	sed -i '$ d' "$file"
 
