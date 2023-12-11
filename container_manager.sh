@@ -16,6 +16,7 @@ create_container() {
 	docker run --init -d \
 		--name $CONTAINER_NAME \
 		-v /home/captdishwasher/Documents/Blog\ Vault:/obsidian \
+        -v ./src:/src \
 		$IMAGE_NAME
 }
 

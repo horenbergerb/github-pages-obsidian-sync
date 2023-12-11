@@ -36,8 +36,8 @@ container_manager also has utilities for troubleshooting the container. Run './c
 
 1) Parse the staging dir into blog-compatible markdown and output to the a parsed staging directory
 2) Copy all images from Obsidian image dir to the user-specified github pages directory.
-3) Update image references in markdown
-4) Parse the staging dir into blog-compatible markdown and output to the user-specififed github pages directory
+3) Update image links in markdown files to point to new destination
+4) Parse the staging dir into blog-compatible markdown and output to the user-specifed github pages directory
 5) Commit the changes to github
 
 ## How RSS feeds are uploaded to Obsidian notes
