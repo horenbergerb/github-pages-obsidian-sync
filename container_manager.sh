@@ -15,8 +15,12 @@ create_container() {
     # Run the Docker container
 	docker run --init -d \
 		--name $CONTAINER_NAME \
+        --runtime=nvidia \
+        --gpus all \
 		-v /home/captdishwasher/Documents/Blog\ Vault:/obsidian \
         -v ./src:/src \
+        -v ./models:/models \
+        --privileged \
 		$IMAGE_NAME
 }
 

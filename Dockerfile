@@ -1,12 +1,28 @@
-# Use Debian slim image
-FROM debian:bullseye-slim
+ARG CUDA_IMAGE="12.1.1-devel-ubuntu22.04"
+FROM nvidia/cuda:${CUDA_IMAGE}
 
 # Install git and cron
 RUN apt-get update \
-    && apt-get install -y git cron wget python3.9 python3-pip\
+    && apt-get install -y git cron wget python3.10 python3-pip\
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install markdownify feedparser
+
+RUN apt-get update && apt-get upgrade -y \
+    && apt-get install -y git build-essential \
+    python3 python3-pip gcc wget \
+    ocl-icd-opencl-dev opencl-headers clinfo \
+    libclblast-dev libopenblas-dev \
+    && mkdir -p /etc/OpenCL/vendors && echo "libnvidia-opencl.so.1" > /etc/OpenCL/vendors/nvidia.icd
+
+# setting build related env vars
+ENV CUDA_DOCKER_ARCH=all
+ENV LLAMA_CUBLAS=1
+
+RUN pip install --upgrade pip
+RUN pip install feedparser openai tzdata
+
+RUN git clone https://github.com/ggerganov/llama.cpp.git /llama.cpp
+RUN cd /llama.cpp && make LLAMA_CUBLAS=1
 
 RUN mkdir /staging
 RUN mkdir /parsed_staging
@@ -39,6 +55,7 @@ RUN mkdir -p /repo/${REPO_DEST_DIR}
 # Set up the cron job
 RUN echo "0 */2 * * * /src/github_blog_sync/copy_and_commit.sh >> /cronlog_blog.txt 2>&1" > /etc/cron.d/obsidian_sync_cron
 RUN echo "0 */2 * * * /src/rss_feed_capture/update_news_feed.sh >> /cronlog_news.txt 2>&1" > /etc/cron.d/obsidian_sync_cron
+RUN echo "* * * * * /src/llm_integration/update_conversations.sh >> /cronlog_llm.txt 2>&1" > /etc/cron.d/obsidian_sync_cron
 RUN chmod 0644 /etc/cron.d/obsidian_sync_cron
 RUN crontab /etc/cron.d/obsidian_sync_cron
 
